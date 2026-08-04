@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { X, Download } from "lucide-react";
 import Image from "next/image";
+import logoIcon from "../../public/logo-icon-custom.jpg";
 
 export default function InstallBanner() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -123,7 +124,7 @@ export default function InstallBanner() {
           </button>
           
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
-            <Image src="/logo-icon-custom.jpg" alt="App Icon" width={32} height={32} style={{ borderRadius: "8px" }} unoptimized priority />
+            <img src={logoIcon.src} alt="App Icon" width="32" height="32" style={{ borderRadius: "8px", objectFit: "contain" }} />
             <strong style={{ fontSize: "1rem", color: "#0f172a" }}>Install Referral Tracker</strong>
           </div>
           
@@ -153,12 +154,10 @@ export default function InstallBanner() {
           <div style={{
             position: "relative", width: "48px", height: "48px", borderRadius: "10px", overflow: "hidden", flexShrink: 0, backgroundColor: "#f8fafc", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center"
           }}>
-            <Image 
-              src="/logo-icon-custom.jpg" 
+            <img 
+              src={logoIcon.src} 
               alt="App Icon" 
-              fill 
-              style={{ objectFit: "contain", transform: "scale(1.2)" }}
-              unoptimized
+              style={{ width: "100%", height: "100%", objectFit: "contain", transform: "scale(1.2)" }}
             />
           </div>
 
