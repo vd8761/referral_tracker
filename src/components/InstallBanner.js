@@ -8,6 +8,7 @@ export default function InstallBanner() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(true);
   const [dismissed, setDismissed] = useState(false);
+  const [isIosNonSafari, setIsIosNonSafari] = useState(false);
 
   useEffect(() => {
     try {
@@ -26,7 +27,10 @@ export default function InstallBanner() {
 
     const ua = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isNonSafari = isIosDevice && (ua.includes('crios') || ua.includes('fxios') || ua.includes('edgios'));
+    
     setIsIOS(isIosDevice);
+    setIsIosNonSafari(isNonSafari);
 
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
@@ -119,14 +123,30 @@ export default function InstallBanner() {
           </button>
           
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
-            <Image src="/logo-icon-custom.jpg" alt="App Icon" width={32} height={32} style={{ borderRadius: "8px" }} />
+            <Image src="/logo-icon-custom.jpg" alt="App Icon" width={32} height={32} style={{ borderRadius: "8px" }} unoptimized priority />
             <strong style={{ fontSize: "1rem", color: "#0f172a" }}>Install Referral Tracker</strong>
           </div>
           
-          <p style={{ margin: 0, fontSize: "0.85rem", color: "#475569" }}>
-            Tap <span style={{ display: "inline-block", border: "1px solid #cbd5e1", borderRadius: "4px", padding: "0 4px", fontSize: "1.1em" }}>⎘</span> below, then <strong>"Add to Home Screen"</strong>
-          </p>
-          <div className="ios-prompt-arrow">↓</div>
+          {isIosNonSafari ? (
+            <p style={{ margin: 0, fontSize: "0.85rem", color: "#ef4444", fontWeight: "600" }}>
+              To install, please open this app in <strong>Safari</strong>.
+            </p>
+          ) : (
+            <>
+              <p style={{ margin: 0, fontSize: "0.85rem", color: "#475569", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+                Tap 
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #cbd5e1", borderRadius: "4px", padding: "2px 6px" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </svg>
+                </span> 
+                below, then <strong>"Add to Home Screen"</strong>
+              </p>
+              <div className="ios-prompt-arrow">↓</div>
+            </>
+          )}
         </div>
       ) : (
         <>
