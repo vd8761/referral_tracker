@@ -10,9 +10,12 @@ export default function InstallBanner() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Check if dismissed previously
-    if (localStorage.getItem("pwa-banner-dismissed") === "true") {
-      setDismissed(true);
+    try {
+      if (localStorage.getItem("pwa-banner-dismissed") === "true") {
+        setDismissed(true);
+      }
+    } catch (e) {
+      console.warn("localStorage not available");
     }
 
     const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches 
@@ -21,7 +24,8 @@ export default function InstallBanner() {
     
     setIsStandalone(isStandaloneMode);
 
-    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const ua = window.navigator.userAgent.toLowerCase();
+    const isIosDevice = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     setIsIOS(isIosDevice);
 
     const handleBeforeInstallPrompt = (e) => {

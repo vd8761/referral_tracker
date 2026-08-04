@@ -52,23 +52,6 @@ export default function InstallAppButton() {
     <button 
       onClick={handleInstallClick}
       className="nav-item install-btn" 
-      style={{ 
-        background: "rgba(2, 132, 199, 0.1)", 
-        border: "1px dashed var(--primary)", 
-        cursor: "pointer", 
-        width: "100%", 
-        textAlign: "left", 
-        color: "var(--primary)", 
-        marginTop: "1rem",
-        marginBottom: "0.5rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        padding: "0.75rem 1rem",
-        borderRadius: "8px",
-        fontWeight: "600",
-        transition: "all 0.2s"
-      }}
     >
       <Download size={20} />
       <span className="nav-label">Install App</span>

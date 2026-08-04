@@ -96,9 +96,8 @@ export default function Sidebar() {
               <span className="nav-label">{link.name}</span>
             </Link>
           ))}
+          <InstallAppButton />
         </nav>
-        
-        <InstallAppButton />
         
         <button 
           onClick={() => signOut()}
