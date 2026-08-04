@@ -42,7 +42,7 @@ export default function CustomerForm({ action, closeModal }) {
         {errors.companyName && <span style={{ color: "#ef4444", fontSize: "0.75rem", marginTop: "0.25rem", display: "block" }}>{errors.companyName}</span>}
       </div>
       
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <div className="form-grid-2">
         <div>
           <label style={{ display: "block", marginBottom: "0.25rem", fontSize: "0.85rem", color: "#475569", fontWeight: "500" }}>Contact Person</label>
           <input type="text" name="contactPerson" placeholder="e.g. John Doe" className="input-field" />

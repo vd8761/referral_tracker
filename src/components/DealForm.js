@@ -69,7 +69,7 @@ export default function DealForm({ action, customers, vendors, closeModal }) {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <div className="form-grid-2">
         <div>
           <label style={{ display: "block", marginBottom: "0.25rem", fontSize: "0.85rem", color: "#475569", fontWeight: "500" }}>
             Customer <span style={{ color: "#ef4444" }}>*</span>
@@ -117,7 +117,7 @@ export default function DealForm({ action, customers, vendors, closeModal }) {
         {errors.requirementDescription && <span style={{ color: "#ef4444", fontSize: "0.75rem", marginTop: "0.25rem", display: "block" }}>{errors.requirementDescription}</span>}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+      <div className="form-grid-3">
         <div>
           <label style={{ display: "block", marginBottom: "0.25rem", fontSize: "0.85rem", color: "#475569", fontWeight: "500" }}>
             Deal Value (Total) <span style={{ color: "#ef4444" }}>*</span>
@@ -177,7 +177,7 @@ export default function DealForm({ action, customers, vendors, closeModal }) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <div className="form-grid-2">
         <div>
           <label style={{ display: "block", marginBottom: "0.25rem", fontSize: "0.85rem", color: "#475569", fontWeight: "500" }}>Deal Status <span style={{ color: "#ef4444" }}>*</span></label>
           <SearchableSelect 

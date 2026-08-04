@@ -127,6 +127,18 @@ a {
   transition: all 0.2s;
 }
 
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
 @media (max-width: 1400px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -345,6 +357,10 @@ select.input-field option {
     border: none;
     margin: 0;
     color: #64748b;
+  }
+
+  .form-grid-2, .form-grid-3 {
+    grid-template-columns: 1fr;
   }
 
   .main-content {
