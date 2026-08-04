@@ -46,6 +46,16 @@ export default async function DealsPage({ searchParams }) {
     <div>
       <div className="page-header">
         <h1 className="page-title">Deals & Commissions</h1>
+        <Modal buttonText="+ Add Deal" title="Create New Deal">
+          {vendors.length === 0 || customers.length === 0 ? (
+            <p style={{ color: "#f59e0b", padding: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+              <AlertTriangle size={18} /> 
+              Please add at least one Customer and one Vendor before creating deals.
+            </p>
+          ) : (
+            <DealForm action={addDeal} customers={customers} vendors={vendors} />
+          )}
+        </Modal>
       </div>
 
       <div className="dashboard-card" style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
@@ -53,16 +63,6 @@ export default async function DealsPage({ searchParams }) {
           <h3 style={{ fontSize: "1.2rem", fontWeight: "600", margin: 0 }}>Active & Past Deals</h3>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <Search placeholder="Search deals..." />
-            <Modal buttonText="+ Add Deal" title="Create New Deal">
-              {vendors.length === 0 || customers.length === 0 ? (
-                <p style={{ color: "#f59e0b", padding: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <AlertTriangle size={18} /> 
-                  Please add at least one Customer and one Vendor before creating deals.
-                </p>
-              ) : (
-                <DealForm action={addDeal} customers={customers} vendors={vendors} />
-              )}
-            </Modal>
           </div>
         </div>
         

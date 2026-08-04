@@ -39,6 +39,9 @@ export default async function CustomersPage({ searchParams }) {
     <div>
       <div className="page-header">
         <h1 className="page-title">Customers</h1>
+        <Modal buttonText="+ Add Customer" title="Add New Customer">
+          <CustomerForm action={addCustomer} />
+        </Modal>
       </div>
 
       <div className="dashboard-card" style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
@@ -46,9 +49,6 @@ export default async function CustomersPage({ searchParams }) {
           <h3 style={{ fontSize: "1.2rem", fontWeight: "600", margin: 0 }}>Customer Directory</h3>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <Search placeholder="Search customers..." />
-            <Modal buttonText="+ Add Customer" title="Create New Customer">
-              <CustomerForm action={addCustomer} />
-            </Modal>
           </div>
         </div>
         

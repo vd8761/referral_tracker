@@ -47,9 +47,14 @@ export default function Sidebar() {
             ReferralTracker
           </div>
         </div>
-        <button onClick={() => signOut()} className="mobile-logout">
-          <LogOut size={20} />
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Link href="/settings" className="mobile-logout" style={{ color: "#64748b" }}>
+            <Settings size={20} />
+          </Link>
+          <button onClick={() => signOut()} className="mobile-logout">
+            <LogOut size={20} />
+          </button>
+        </div>
       </div>
 
       <aside className="sidebar">
@@ -85,7 +90,7 @@ export default function Sidebar() {
             <Link 
               key={link.name} 
               href={link.href}
-              className={`nav-item ${pathname === link.href ? "active" : ""}`}
+              className={`nav-item ${pathname === link.href ? "active" : ""} ${link.name === "Settings" ? "desktop-only" : ""}`}
             >
               {link.icon}
               <span className="nav-label">{link.name}</span>

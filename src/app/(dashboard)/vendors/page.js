@@ -39,6 +39,9 @@ export default async function VendorsPage({ searchParams }) {
     <div>
       <div className="page-header">
         <h1 className="page-title">Vendors</h1>
+        <Modal buttonText="+ Add Vendor" title="Add New Vendor">
+          <VendorForm action={addVendor} />
+        </Modal>
       </div>
 
       <div className="dashboard-card" style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
@@ -46,9 +49,6 @@ export default async function VendorsPage({ searchParams }) {
           <h3 style={{ fontSize: "1.2rem", fontWeight: "600", margin: 0 }}>Vendor Directory</h3>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <Search placeholder="Search vendors..." />
-            <Modal buttonText="+ Add Vendor" title="Create New Vendor">
-              <VendorForm action={addVendor} />
-            </Modal>
           </div>
         </div>
         
