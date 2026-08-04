@@ -5,6 +5,7 @@ import { LayoutDashboard, Users, Briefcase, Handshake, LogOut, TrendingUp, Setti
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
+import InstallAppButton from "./InstallAppButton";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "600", "700"] });
 
@@ -91,6 +92,8 @@ export default function Sidebar() {
             </Link>
           ))}
         </nav>
+        
+        <InstallAppButton />
         
         <button 
           onClick={() => signOut()}
