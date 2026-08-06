@@ -6,6 +6,7 @@ import Modal from "@/components/Modal";
 import DealForm from "@/components/DealForm";
 import Tooltip from "@/components/Tooltip";
 import DeleteButton from "@/components/DeleteButton";
+import SubmitButton from "@/components/SubmitButton";
 import { AlertTriangle, Trash2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -149,12 +150,14 @@ export default async function DealsPage({ searchParams }) {
                                 <option value="CLOSED">Closed (Won)</option>
                               </select>
                               
-                              <button type="submit" style={{ 
-                                background: "var(--primary)", color: "white", border: "none", padding: "0.25rem 0.5rem", borderRadius: "4px", fontSize: "0.75rem", cursor: "pointer", fontWeight: "600",
-                                flexShrink: 0
-                              }}>
-                                Save
-                              </button>
+                              <SubmitButton 
+                                defaultText="Save"
+                                loadingText="..."
+                                style={{ 
+                                  background: "var(--primary)", color: "white", border: "none", padding: "0.25rem 0.5rem", borderRadius: "4px", fontSize: "0.75rem", fontWeight: "600",
+                                  flexShrink: 0
+                                }}
+                              />
                             </div>
                             
                             <select 
@@ -173,15 +176,17 @@ export default async function DealsPage({ searchParams }) {
                         </form>
                         
                         <form action={updateDealStatus.bind(null, deal.id, deal.dealStatus, deal.commissionStatus === "PENDING" ? "RECEIVED" : "PENDING", deal.wonVendorId)} style={{ width: "100%" }}>
-                          <button type="submit" style={{ 
-                            background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
-                            color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
-                            border: `1px solid ${deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.2)" : "rgba(16, 185, 129, 0.2)"}`, 
-                            padding: "0.25rem", borderRadius: "4px", cursor: "pointer", fontSize: "0.75rem", fontWeight: "600",
-                            width: "100%"
-                          }}>
-                            {deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
-                          </button>
+                          <SubmitButton 
+                            defaultText={deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
+                            loadingText="Updating..."
+                            style={{ 
+                              background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
+                              color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
+                              border: `1px solid ${deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.2)" : "rgba(16, 185, 129, 0.2)"}`, 
+                              padding: "0.25rem", borderRadius: "4px", fontSize: "0.75rem", fontWeight: "600",
+                              width: "100%"
+                            }}
+                          />
                         </form>
                       </div>
                     </td>
@@ -300,24 +305,28 @@ export default async function DealsPage({ searchParams }) {
                       </select>
                     </div>
                     {/* Bottom Row: Full Width Save Button (Pill) */}
-                    <button type="submit" style={{ 
-                      background: "var(--foreground)", color: "white", border: "none", padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "600", width: "100%", boxShadow: "0 4px 10px -2px rgba(0,0,0,0.15)"
-                    }}>
-                      Save Changes
-                    </button>
+                    <SubmitButton 
+                      defaultText="Save Changes"
+                      loadingText="Saving..."
+                      style={{ 
+                        background: "var(--foreground)", color: "white", border: "none", padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "600", width: "100%", boxShadow: "0 4px 10px -2px rgba(0,0,0,0.15)"
+                      }}
+                    />
                   </form>
                   
                   {/* Payout Button */}
                   <form action={updateDealStatus.bind(null, deal.id, deal.dealStatus, deal.commissionStatus === "PENDING" ? "RECEIVED" : "PENDING", deal.wonVendorId)} style={{ width: "100%" }}>
-                    <button type="submit" style={{ 
-                      background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
-                      color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
-                      border: "none", 
-                      padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "700",
-                      width: "100%"
-                    }}>
-                      {deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
-                    </button>
+                    <SubmitButton 
+                      defaultText={deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
+                      loadingText="Updating..."
+                      style={{ 
+                        background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
+                        color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
+                        border: "none", 
+                        padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "700",
+                        width: "100%"
+                      }}
+                    />
                   </form>
                 </div>
               </div>
