@@ -1,9 +1,9 @@
 "use client";
 import { useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
 
-export default function DeleteButton({ itemType = "item" }) {
+export default function DeleteButton({ itemType = "item", iconOnly = false }) {
   const { pending } = useFormStatus();
   const [showConfirm, setShowConfirm] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -12,28 +12,43 @@ export default function DeleteButton({ itemType = "item" }) {
 
   return (
     <>
-      <button 
-        type="button" 
-        disabled={pending}
-        onClick={(e) => {
-          e.preventDefault();
-          setShowConfirm(true);
-        }}
-        style={{ 
-          background: "rgba(239, 68, 68, 0.1)", 
-          color: "var(--danger)", 
-          border: "1px solid rgba(239, 68, 68, 0.2)", 
-          padding: "0.4rem 0.75rem", 
-          borderRadius: "6px", 
-          cursor: pending ? "not-allowed" : "pointer", 
-          fontSize: "0.8rem", 
-          fontWeight: "600", 
-          whiteSpace: "nowrap",
-          opacity: pending ? 0.7 : 1
-        }}
-      >
-        {pending ? "Deleting..." : "Delete"}
-      </button>
+      {iconOnly ? (
+        <button 
+          type="button" 
+          disabled={pending}
+          title={`Delete ${itemType}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowConfirm(true);
+          }}
+          style={{ background: "none", border: "none", color: "#ef4444", cursor: pending ? "not-allowed" : "pointer", display: "flex", padding: "4px", opacity: pending ? 0.4 : 0.6 }}
+        >
+          <Trash2 size={18} />
+        </button>
+      ) : (
+        <button 
+          type="button" 
+          disabled={pending}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowConfirm(true);
+          }}
+          style={{ 
+            background: "rgba(239, 68, 68, 0.1)", 
+            color: "var(--danger)", 
+            border: "1px solid rgba(239, 68, 68, 0.2)", 
+            padding: "0.4rem 0.75rem", 
+            borderRadius: "6px", 
+            cursor: pending ? "not-allowed" : "pointer", 
+            fontSize: "0.8rem", 
+            fontWeight: "600", 
+            whiteSpace: "nowrap",
+            opacity: pending ? 0.7 : 1
+          }}
+        >
+          {pending ? "Deleting..." : "Delete"}
+        </button>
+      )}
 
       {mounted && showConfirm && (
         <div style={{

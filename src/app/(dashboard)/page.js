@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import DashboardCharts from "@/components/DashboardCharts";
-import { Handshake, Banknote, Clock, CheckCircle } from "lucide-react";
+import { Handshake, Banknote, Clock, CheckCircle, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -70,13 +71,18 @@ export default async function DashboardPage() {
             <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--success)" }}>₹{totalReceived.toLocaleString('en-IN')}</h2>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "var(--danger)" }}><Clock /></div>
-          <div>
-            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Pending</p>
-            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--danger)" }}>₹{totalPending.toLocaleString('en-IN')}</h2>
+        <Link href="/pending-commissions" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+          <div className="stat-card" style={{ cursor: "pointer", position: "relative" }}>
+            <div className="stat-icon" style={{ background: "rgba(239, 68, 68, 0.1)", color: "var(--danger)" }}><Clock /></div>
+            <div style={{ flex: 1 }}>
+              <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Pending</p>
+              <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--danger)" }}>₹{totalPending.toLocaleString('en-IN')}</h2>
+            </div>
+            <div style={{ color: "var(--danger)", opacity: 0.5, paddingRight: "0.5rem" }}>
+              <ChevronRight size={24} />
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className="dashboard-card">

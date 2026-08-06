@@ -6,7 +6,7 @@ import Modal from "@/components/Modal";
 import DealForm from "@/components/DealForm";
 import Tooltip from "@/components/Tooltip";
 import DeleteButton from "@/components/DeleteButton";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +58,7 @@ export default async function DealsPage({ searchParams }) {
         </Modal>
       </div>
 
-      <div className="dashboard-card" style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
+      <div className="dashboard-card no-mobile-card" style={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
           <h3 style={{ fontSize: "1.2rem", fontWeight: "600", margin: 0 }}>Active & Past Deals</h3>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
@@ -66,7 +66,7 @@ export default async function DealsPage({ searchParams }) {
           </div>
         </div>
         
-        <div className="table-container" style={{ flex: 1 }}>
+        <div className="table-container desktop-only" style={{ flex: 1 }}>
           <table className="data-table">
             <thead>
               <tr>
@@ -87,12 +87,12 @@ export default async function DealsPage({ searchParams }) {
               ) : (
                 deals.map(deal => (
                   <tr key={deal.id}>
-                    <td style={{ verticalAlign: "top", paddingTop: "1rem" }}>
+                    <td data-label="Connection" style={{ verticalAlign: "top", paddingTop: "1rem" }}>
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                         <span style={{ fontWeight: "700", color: "var(--foreground)", fontSize: "0.95rem" }}>{deal.customer.companyName}</span>
                         <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
-                          <span style={{ color: "#94a3b8", fontSize: "0.8rem", marginTop: "2px" }}>↳</span>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                           <span style={{ color: "#94a3b8", fontSize: "0.8rem", marginTop: "2px" }}>↳</span>
+                           <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                             {deal.referredVendors.map(v => (
                               <span key={v.id} style={{ 
                                 background: deal.wonVendorId === v.id ? "rgba(16, 185, 129, 0.1)" : "rgba(37, 99, 235, 0.05)",
@@ -111,12 +111,12 @@ export default async function DealsPage({ searchParams }) {
                         </div>
                       </div>
                     </td>
-                    <td style={{ maxWidth: "250px", verticalAlign: "top", paddingTop: "1rem" }}>
+                    <td data-label="Requirement" style={{ maxWidth: "250px", verticalAlign: "top", paddingTop: "1rem" }}>
                       <Tooltip text={deal.requirementDescription}>
                         <span style={{ color: "#475569" }}>{deal.requirementDescription}</span>
                       </Tooltip>
                     </td>
-                    <td style={{ verticalAlign: "top", paddingTop: "1rem" }}>
+                    <td data-label="Value" style={{ verticalAlign: "top", paddingTop: "1rem" }}>
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
                         <strong style={{ color: "var(--foreground)" }}>₹{deal.dealValue.toLocaleString('en-IN')}</strong>
                         <span style={{ fontSize: "0.8rem", color: "#64748b" }}>
@@ -124,11 +124,11 @@ export default async function DealsPage({ searchParams }) {
                         </span>
                       </div>
                     </td>
-                    <td style={{ verticalAlign: "top", paddingTop: "1rem" }}>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "190px" }}>
-                        <form action={updateDealStatusForm.bind(null, deal.id, deal.commissionStatus)}>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                            <div style={{ display: "flex", gap: "0.25rem" }}>
+                    <td data-label="Status" style={{ verticalAlign: "top", paddingTop: "1rem" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%", maxWidth: "190px" }}>
+                        <form action={updateDealStatusForm.bind(null, deal.id, deal.commissionStatus)} style={{ width: "100%" }}>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
+                            <div style={{ display: "flex", gap: "0.25rem", width: "100%" }}>
                               <select 
                                 key={deal.dealStatus}
                                 name="dealStatus" 
@@ -142,7 +142,7 @@ export default async function DealsPage({ searchParams }) {
                                   color: deal.dealStatus === "OPEN" ? "var(--primary)" : "var(--success)",
                                   border: `1px solid ${deal.dealStatus === "OPEN" ? "rgba(2, 132, 199, 0.2)" : "rgba(16, 185, 129, 0.2)"}`,
                                   fontWeight: "600",
-                                  minWidth: "0" // allows flex child to shrink properly
+                                  minWidth: "0"
                                 }}
                               >
                                 <option value="OPEN">Open</option>
@@ -172,7 +172,7 @@ export default async function DealsPage({ searchParams }) {
                           </div>
                         </form>
                         
-                        <form action={updateDealStatus.bind(null, deal.id, deal.dealStatus, deal.commissionStatus === "PENDING" ? "RECEIVED" : "PENDING", deal.wonVendorId)}>
+                        <form action={updateDealStatus.bind(null, deal.id, deal.dealStatus, deal.commissionStatus === "PENDING" ? "RECEIVED" : "PENDING", deal.wonVendorId)} style={{ width: "100%" }}>
                           <button type="submit" style={{ 
                             background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
                             color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
@@ -185,7 +185,7 @@ export default async function DealsPage({ searchParams }) {
                         </form>
                       </div>
                     </td>
-                    <td style={{ textAlign: "right", verticalAlign: "top", paddingTop: "1rem" }}>
+                    <td data-label="Actions" style={{ textAlign: "right", verticalAlign: "top", paddingTop: "1rem" }}>
                         <form action={deleteDeal.bind(null, deal.id)}>
                           <DeleteButton itemType="deal" />
                         </form>
@@ -195,6 +195,134 @@ export default async function DealsPage({ searchParams }) {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile-Only Custom Deals List */}
+        <div className="mobile-only" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {deals.length === 0 ? (
+             <div style={{ textAlign: "center", color: "#64748b", padding: "2rem" }}>
+               No deals found. Click "+ Add Deal" to create one.
+             </div>
+          ) : (
+            deals.map(deal => (
+              <div key={deal.id} style={{
+                background: "#ffffff",
+                border: "none",
+                borderRadius: "16px",
+                padding: "1.25rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                position: "relative",
+                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)",
+                borderTop: "4px solid var(--primary)"
+              }}>
+                {/* Trash Icon Absolute Top Right */}
+                <form action={deleteDeal.bind(null, deal.id)} style={{ position: "absolute", top: "1rem", right: "1rem" }}>
+                   <DeleteButton itemType="deal" iconOnly={true} />
+                </form>
+
+                {/* Header: Customer and Value */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", paddingRight: "2rem" }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span style={{ fontWeight: "800", color: "var(--foreground)", fontSize: "1.15rem", letterSpacing: "-0.02em" }}>{deal.customer.companyName}</span>
+                    <span style={{ color: "#64748b", fontSize: "0.85rem", marginTop: "6px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", lineHeight: "1.4" }}>
+                      {deal.requirementDescription}
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                    <strong style={{ color: "var(--primary)", fontSize: "1.25rem", fontWeight: "800", letterSpacing: "-0.02em" }}>₹{deal.dealValue.toLocaleString('en-IN')}</strong>
+                    <span style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: "600", marginTop: "2px" }}>
+                      {deal.commissionType === "PERCENTAGE" ? `${deal.commissionValue}%` : `Fixed`} (₹{deal.commissionAmount.toLocaleString('en-IN')})
+                    </span>
+                  </div>
+                </div>
+
+                {/* Vendors */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", marginTop: "0.25rem" }}>
+                   {deal.referredVendors.map(v => (
+                     <span key={v.id} style={{ 
+                       background: deal.wonVendorId === v.id ? "rgba(16, 185, 129, 0.1)" : "#f1f5f9",
+                       color: deal.wonVendorId === v.id ? "var(--success)" : "#475569",
+                       padding: "4px 10px", 
+                       borderRadius: "16px", 
+                       fontSize: "0.75rem", 
+                       fontWeight: "600"
+                     }}>
+                       {v.companyName} {deal.wonVendorId === v.id && "🏆"}
+                     </span>
+                   ))}
+                </div>
+
+                {/* Actions Row (Invisible Controls) */}
+                <div style={{ 
+                  display: "flex", 
+                  flexDirection: "column", 
+                  gap: "1rem", 
+                  paddingTop: "1rem", 
+                  borderTop: "1px solid rgba(0,0,0,0.04)"
+                }}>
+                  <form action={updateDealStatusForm.bind(null, deal.id, deal.commissionStatus)} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {/* Top Row: 50/50 Split for Selects, styled as text */}
+                    <div style={{ display: "flex", gap: "1rem", width: "100%", alignItems: "center", padding: "0 0.25rem" }}>
+                      <select 
+                        key={deal.dealStatus}
+                        name="dealStatus" 
+                        defaultValue={deal.dealStatus} 
+                        style={{ 
+                          fontSize: "0.95rem", 
+                          flex: 1,
+                          background: "transparent",
+                          color: deal.dealStatus === "OPEN" ? "var(--primary)" : "var(--success)",
+                          border: "none",
+                          fontWeight: "700",
+                          minWidth: "0",
+                          outline: "none",
+                          padding: 0
+                        }}
+                      >
+                        <option value="OPEN">Open Deal</option>
+                        <option value="CLOSED">Closed (Won)</option>
+                      </select>
+                      
+                      <div style={{ width: "1px", height: "24px", background: "rgba(0,0,0,0.06)" }}></div>
+                      
+                      <select 
+                        key={deal.wonVendorId || "none"}
+                        name="wonVendorId" 
+                        defaultValue={deal.wonVendorId || ""} 
+                        style={{ fontSize: "0.95rem", flex: 1.5, minWidth: "0", background: "transparent", border: "none", outline: "none", padding: 0, fontWeight: "600", color: "#475569" }}
+                      >
+                        <option value="">Select Winner...</option>
+                        {deal.referredVendors.map(v => (
+                          <option key={v.id} value={v.id}>{v.companyName}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {/* Bottom Row: Full Width Save Button (Pill) */}
+                    <button type="submit" style={{ 
+                      background: "var(--foreground)", color: "white", border: "none", padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "600", width: "100%", boxShadow: "0 4px 10px -2px rgba(0,0,0,0.15)"
+                    }}>
+                      Save Changes
+                    </button>
+                  </form>
+                  
+                  {/* Payout Button */}
+                  <form action={updateDealStatus.bind(null, deal.id, deal.dealStatus, deal.commissionStatus === "PENDING" ? "RECEIVED" : "PENDING", deal.wonVendorId)} style={{ width: "100%" }}>
+                    <button type="submit" style={{ 
+                      background: deal.commissionStatus === "PENDING" ? "rgba(245, 158, 11, 0.1)" : "rgba(16, 185, 129, 0.1)", 
+                      color: deal.commissionStatus === "PENDING" ? "var(--warning)" : "var(--success)", 
+                      border: "none", 
+                      padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "700",
+                      width: "100%"
+                    }}>
+                      Payout: {deal.commissionStatus}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ))
+          )}
         </div>
         
         <div style={{ marginTop: "1.5rem" }}>

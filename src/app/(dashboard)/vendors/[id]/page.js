@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { updateDealStatus } from "@/lib/actions";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Handshake, Banknote, CheckCircle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ export default async function VendorDetailsPage({ params }) {
   const vendor = await prisma.vendor.findUnique({
     where: { id },
     include: {
-      deals: {
+      referredDeals: {
         include: {
           customer: true
         },
@@ -27,13 +27,13 @@ export default async function VendorDetailsPage({ params }) {
   }
 
   // Analytics Math
-  const totalDeals = vendor.deals.length;
-  const totalPipeline = vendor.deals.reduce((sum, deal) => sum + deal.dealValue, 0);
-  const closedWonValue = vendor.deals
-    .filter(d => d.dealStatus === "CLOSED")
+  const totalDeals = vendor.referredDeals.length;
+  const totalPipeline = vendor.referredDeals.reduce((sum, deal) => sum + deal.dealValue, 0);
+  const closedWonValue = vendor.referredDeals
+    .filter(d => d.dealStatus === "CLOSED" && d.wonVendorId === vendor.id)
     .reduce((sum, deal) => sum + deal.dealValue, 0);
-  const commissionEarned = vendor.deals
-    .filter(d => d.commissionStatus === "RECEIVED")
+  const commissionEarned = vendor.referredDeals
+    .filter(d => d.commissionStatus === "RECEIVED" && d.wonVendorId === vendor.id)
     .reduce((sum, deal) => sum + deal.commissionAmount, 0);
 
   return (
@@ -55,20 +55,32 @@ export default async function VendorDetailsPage({ params }) {
       {/* KPI Stats specific to this Vendor */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-title">Total Deals Assigned</div>
-          <div className="stat-value">{totalDeals}</div>
+          <div className="stat-icon" style={{ background: "rgba(2, 132, 199, 0.1)", color: "var(--primary)" }}><Handshake /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Total Deals Assigned</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem" }}>{totalDeals}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Total Value Assigned</div>
-          <div className="stat-value">₹{totalPipeline.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "var(--warning)" }}><Banknote /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Total Value Assigned</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem" }}>₹{totalPipeline.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Closed / Won</div>
-          <div className="stat-value" style={{ color: "var(--success)" }}>₹{closedWonValue.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "var(--success)" }}><CheckCircle /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Closed / Won</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--success)" }}>₹{closedWonValue.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Commissions Generated</div>
-          <div className="stat-value" style={{ color: "var(--primary)" }}>₹{commissionEarned.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(37, 99, 235, 0.1)", color: "var(--primary)" }}><Banknote /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Commissions Generated</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--primary)" }}>₹{commissionEarned.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
       </div>
 
@@ -76,11 +88,11 @@ export default async function VendorDetailsPage({ params }) {
       <div className="dashboard-card">
         <h3 style={{ marginBottom: "1.5rem", fontSize: "1.2rem", fontWeight: "600" }}>Deal History</h3>
         
-        {vendor.deals.length === 0 ? (
+        {vendor.referredDeals.length === 0 ? (
           <p style={{ color: "#64748b" }}>No deals have been assigned to this vendor yet.</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {vendor.deals.map(deal => (
+            {vendor.referredDeals.map(deal => (
               <div key={deal.id} style={{ padding: "1.25rem", background: "#f8fafc", borderRadius: "12px", border: "1px solid var(--surface-border)", display: "flex", flexWrap: "wrap", gap: "1.5rem", alignItems: "center", justifyContent: "space-between" }}>
                 
                 {/* Deal Info */}

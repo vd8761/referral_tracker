@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { updateDealStatus } from "@/lib/actions";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, Handshake, Banknote, CheckCircle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,8 @@ export default async function CustomerDetailsPage({ params }) {
     include: {
       deals: {
         include: {
-          vendor: true
+          referredVendors: true,
+          wonVendor: true
         },
         orderBy: { createdAt: "desc" }
       }
@@ -55,20 +56,32 @@ export default async function CustomerDetailsPage({ params }) {
       {/* KPI Stats specific to this Customer */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-title">Total Deals</div>
-          <div className="stat-value">{totalDeals}</div>
+          <div className="stat-icon" style={{ background: "rgba(2, 132, 199, 0.1)", color: "var(--primary)" }}><Handshake /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Total Deals</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem" }}>{totalDeals}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Total Pipeline</div>
-          <div className="stat-value">₹{totalPipeline.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "var(--warning)" }}><Banknote /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Total Pipeline</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem" }}>₹{totalPipeline.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Closed / Won</div>
-          <div className="stat-value" style={{ color: "var(--success)" }}>₹{closedWonValue.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "var(--success)" }}><CheckCircle /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Closed / Won</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--success)" }}>₹{closedWonValue.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Commissions Earned</div>
-          <div className="stat-value" style={{ color: "var(--primary)" }}>₹{commissionEarned.toLocaleString('en-IN')}</div>
+          <div className="stat-icon" style={{ background: "rgba(37, 99, 235, 0.1)", color: "var(--primary)" }}><Banknote /></div>
+          <div>
+            <p style={{ color: "#64748b", fontSize: "0.85rem", textTransform: "uppercase", fontWeight: "700" }}>Commissions Earned</p>
+            <h2 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "0.25rem", color: "var(--primary)" }}>₹{commissionEarned.toLocaleString('en-IN')}</h2>
+          </div>
         </div>
       </div>
 
@@ -80,7 +93,17 @@ export default async function CustomerDetailsPage({ params }) {
           <p style={{ color: "#64748b" }}>No deals or requirements logged for this customer yet.</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {customer.deals.map(deal => (
+            {customer.deals.map(deal => {
+              let vendorName = "Unknown/Pending";
+              if (deal.wonVendor) {
+                vendorName = deal.wonVendor.companyName;
+              } else if (deal.referredVendors && deal.referredVendors.length === 1) {
+                vendorName = deal.referredVendors[0].companyName;
+              } else if (deal.referredVendors && deal.referredVendors.length > 1) {
+                vendorName = "Multiple Vendors (Winner Undecided)";
+              }
+
+              return (
               <div key={deal.id} style={{ padding: "1.25rem", background: "#f8fafc", borderRadius: "12px", border: "1px solid var(--surface-border)", display: "flex", flexWrap: "wrap", gap: "1.5rem", alignItems: "center", justifyContent: "space-between" }}>
                 
                 {/* Deal Info */}
@@ -90,9 +113,9 @@ export default async function CustomerDetailsPage({ params }) {
                       {new Date(deal.createdAt).toLocaleDateString()}
                     </span>
                     <span style={{ color: "#94a3b8" }}>→ Sent to Vendor:</span>
-                    <Link href={`/vendors/${deal.vendor.id}`} style={{ fontWeight: "700", color: "var(--primary)", textDecoration: "none" }}>
-                      {deal.vendor.companyName}
-                    </Link>
+                    <span style={{ fontWeight: "700", color: "var(--primary)", textDecoration: "none" }}>
+                      {vendorName}
+                    </span>
                   </div>
                   <p style={{ fontSize: "0.95rem", color: "#475569", marginBottom: "0.75rem" }}>
                     <strong style={{ color: "var(--foreground)" }}>Requirement:</strong> {deal.requirementDescription}
@@ -129,7 +152,8 @@ export default async function CustomerDetailsPage({ params }) {
                   </form>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

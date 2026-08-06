@@ -59,13 +59,13 @@ export default function SettingsPage() {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "550px", margin: "0 auto", width: "100%" }}>
       <div className="page-header">
         <h1 className="page-title">Settings</h1>
       </div>
       
-      <div className="dashboard-card" style={{ maxWidth: "500px" }}>
-        <h3 style={{ marginBottom: "1.5rem", fontSize: "1.2rem", fontWeight: "600" }}>Change Password</h3>
+      <div className="dashboard-card">
+        <h3 style={{ marginBottom: "1rem", fontSize: "1.2rem", fontWeight: "600" }}>Change Password</h3>
         
         {message.text && (
           <div style={{ 
@@ -83,7 +83,7 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ position: "relative" }}>
             <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.9rem", color: "#475569", fontWeight: "500" }}>Current Password</label>
             <div style={{ position: "relative" }}>

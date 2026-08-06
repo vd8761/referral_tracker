@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
 import InstallAppButton from "./InstallAppButton";
+import ProfileDropdown from "./ProfileDropdown";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "600", "700"] });
 
@@ -31,29 +32,23 @@ export default function Sidebar() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            overflow: "hidden",
             pointerEvents: "none"
           }}>
             <Image 
               src="/logo-icon-custom.jpg" 
               alt="Logo Icon" 
               fill 
-              style={{ objectFit: "contain", mixBlendMode: "darken", transform: "scale(1.2)" }}
+              style={{ objectFit: "contain", mixBlendMode: "darken", transform: "scale(1.3) translateY(2px)" }}
               priority
               unoptimized
             />
           </div>
-          <div className={montserrat.className} style={{ fontSize: "1.25rem", fontWeight: "600", letterSpacing: "-0.3px", color: "#0f172a" }}>
+          <div className={montserrat.className} style={{ fontSize: "1.25rem", fontWeight: "700", letterSpacing: "-0.3px", color: "#0f172a" }}>
             ReferralTracker
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Link href="/settings" className="mobile-logout" style={{ color: "#64748b" }}>
-            <Settings size={20} />
-          </Link>
-          <button onClick={() => signOut()} className="mobile-logout">
-            <LogOut size={20} />
-          </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <ProfileDropdown />
         </div>
       </div>
 
@@ -67,19 +62,18 @@ export default function Sidebar() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              overflow: "hidden",
               pointerEvents: "none"
             }}>
               <Image 
                 src="/logo-icon-custom.jpg" 
                 alt="Logo Icon" 
                 fill 
-                style={{ objectFit: "contain", mixBlendMode: "darken", transform: "scale(1.2)" }}
+                style={{ objectFit: "contain", mixBlendMode: "darken", transform: "scale(1.3) translateY(3px)" }}
                 priority
                 unoptimized
               />
             </div>
-            <div className={montserrat.className} style={{ fontSize: "1.15rem", fontWeight: "700", letterSpacing: "-0.2px", color: "#0f172a" }}>
+            <div className={montserrat.className} style={{ fontSize: "1.35rem", fontWeight: "800", letterSpacing: "-0.5px", color: "#0f172a" }}>
               ReferralTracker
             </div>
           </div>

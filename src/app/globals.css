@@ -331,7 +331,7 @@ select.input-field option {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
+    padding: 1rem 1.25rem;
     background: var(--surface);
     border-bottom: 1px solid var(--surface-border);
     position: fixed;
@@ -417,8 +417,8 @@ select.input-field option {
     margin-left: 0;
     padding-top: 90px;
     padding-bottom: 90px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .modal-overlay {
@@ -443,17 +443,38 @@ select.input-field option {
   }
 
   .dashboard-card {
-    padding: 0.75rem;
+    padding: 1.25rem;
   }
 
-  .data-table th, .data-table td {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.85rem;
+  .no-mobile-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
-  
+
+  .stat-card {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    gap: 1rem;
+  }
+
   .desktop-only {
     display: none !important;
   }
+  
+  .mobile-only {
+    display: flex !important;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.mobile-only {
+  display: none; /* hidden on desktop */
 }
 
 /* Data Table Styles */
