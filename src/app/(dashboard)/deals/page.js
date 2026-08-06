@@ -180,7 +180,7 @@ export default async function DealsPage({ searchParams }) {
                             padding: "0.25rem", borderRadius: "4px", cursor: "pointer", fontSize: "0.75rem", fontWeight: "600",
                             width: "100%"
                           }}>
-                            Payout: {deal.commissionStatus}
+                            {deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
                           </button>
                         </form>
                       </div>
@@ -316,7 +316,7 @@ export default async function DealsPage({ searchParams }) {
                       padding: "0.85rem", borderRadius: "24px", fontSize: "0.95rem", fontWeight: "700",
                       width: "100%"
                     }}>
-                      Payout: {deal.commissionStatus}
+                      {deal.commissionStatus === "PENDING" ? "Mark as Received" : "Payment Received ✓"}
                     </button>
                   </form>
                 </div>

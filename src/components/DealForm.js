@@ -5,6 +5,7 @@ import SearchableSelect from "@/components/SearchableSelect";
 export default function DealForm({ action, customers, vendors, closeModal }) {
   const [errors, setErrors] = useState({});
   const [commissionType, setCommissionType] = useState("PERCENTAGE");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef(null);
 
   const validateField = (name, value, currentCommissionType = commissionType) => {
@@ -57,11 +58,16 @@ export default function DealForm({ action, customers, vendors, closeModal }) {
     }
 
     if (isValid) {
-      await action(formData);
-      form.reset();
-      setErrors({});
-      setCommissionType("PERCENTAGE");
-      if (closeModal) closeModal();
+      setIsSubmitting(true);
+      try {
+        await action(formData);
+        form.reset();
+        setErrors({});
+        setCommissionType("PERCENTAGE");
+        if (closeModal) closeModal();
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -206,7 +212,9 @@ export default function DealForm({ action, customers, vendors, closeModal }) {
         </div>
       </div>
 
-      <button type="submit" className="btn-primary" style={{ marginTop: "0.5rem" }}>Create Deal</button>
+      <button type="submit" className="btn-primary" style={{ marginTop: "0.5rem", opacity: isSubmitting ? 0.7 : 1 }} disabled={isSubmitting}>
+        {isSubmitting ? "Creating Deal..." : "Create Deal"}
+      </button>
     </form>
   );
 }

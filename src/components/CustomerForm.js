@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export default function CustomerForm({ action, closeModal }) {
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,11 +17,16 @@ export default function CustomerForm({ action, closeModal }) {
     }
 
     if (isValid) {
-      const formData = new FormData(form);
-      await action(formData);
-      form.reset();
-      setErrors({});
-      if (closeModal) closeModal();
+      setIsSubmitting(true);
+      try {
+        const formData = new FormData(form);
+        await action(formData);
+        form.reset();
+        setErrors({});
+        if (closeModal) closeModal();
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -63,7 +69,9 @@ export default function CustomerForm({ action, closeModal }) {
         <textarea name="notes" placeholder="Notes / Requirements context" className="input-field" rows={3}></textarea>
       </div>
       
-      <button type="submit" className="btn-primary" style={{ marginTop: "0.5rem" }}>Save Customer</button>
+      <button type="submit" className="btn-primary" style={{ marginTop: "0.5rem", opacity: isSubmitting ? 0.7 : 1 }} disabled={isSubmitting}>
+        {isSubmitting ? "Saving..." : "Save Customer"}
+      </button>
     </form>
   );
 }
